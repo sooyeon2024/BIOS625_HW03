@@ -1,0 +1,165 @@
+---
+title: "linR_tutorial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{linR_tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+  
+## Introduction
+  
+The 'linR' function performs linear regression analysis and returns a detailed summary of the results. 
+  
+## Package installation
+
+If you haven't installed the linR package, ensure it's installed or loaded in your R environment. 
+```{r setup}
+# install.packages("BIOS625.HW03")
+library(BIOS625.HW03)
+```
+
+## Function overview
+
+Below is a description of the parameters the function accepts:
+
+- **`formula`**: `response ~ predictor1 + predictor2`.
+- **`data`**: The dataset of interest
+- **`level`**: The confidence level (default = .95)
+
+## Example
+
+Here is an example of how to use the `linR` function with the `airquality` dataset
+
+- **`formula`**: `Ozone ~ Temp + Wind`
+- **data**: airquality
+- **level`**: 0.95
+```{r, echo = TRUE}
+# parameters
+formula <- Ozone ~ Temp + Wind
+data <- na.omit(airquality)
+level <- 0.95
+
+# linear regression model using linR
+linR_model <- linR(formula, data, level = 0.95)
+
+# linear regression model using lm
+lm_model <- lm(formula, data)
+lm_model_summary <- summary(lm_model)
+```
+
+(1) Estimated coefficients
+```{r}
+linR_model$coefficients
+```
+
+(2) Fitted values
+```{r}
+linR_model$fitted_values
+```
+
+(3) Residuals
+```{r}
+linR_model$residuals
+```
+
+(4) R-squared
+```{r}
+linR_model$R_squared
+```
+
+(5) Adjusted R-squared
+```{r}
+linR_model$adj_R_squared
+```
+
+(6) t-statistics
+```{r}
+linR_model$t_values
+```
+
+(7) p-values
+```{r}
+linR_model$p_values
+```
+
+(8) F-statistic
+```{r}
+linR_model$F_statistic
+```
+
+(9) Confidence Interval
+```{r}
+linR_CI_result <- linR_model$CI_table
+
+# lower bound
+linR_CI_result$'CI.Lower'
+
+# upper bound
+linR_CI_result$'CI.Upper'
+
+# table of both lower and upper CI
+linR_model$CI_table
+
+```
+
+## Compare with lm()
+```{r}
+# Coefficients
+all.equal(as.numeric(coef(lm_model)), 
+          as.numeric(linR_model$coefficients))
+
+# Fitted values
+all.equal(as.numeric(fitted.values(lm_model)),
+           as.numeric(linR_model$fitted_values))
+
+# Residuals
+all.equal(as.numeric(residuals(lm_model)),
+          as.numeric(linR_model$residuals))
+
+# R-squared
+all.equal((lm_model_summary$r.squared),
+          linR_model$R_squared)
+
+# Adjusted R-squared
+all.equal((lm_model_summary$adj.r.squared),
+          linR_model$adj_R_squared)
+
+# t-statistics
+all.equal(as.numeric(lm_model_summary$coefficients[, "t value"]),
+          as.numeric(linR_model$t_values))
+
+# p-values for t-tests
+all.equal(as.numeric(lm_model_summary$coefficients[, "Pr(>|t|)"]),
+          as.numeric(linR_model$p_values))
+
+# F-statistic
+all.equal(as.numeric(lm_model_summary$fstatistic[1]),
+          linR_model$F_statistic)
+
+```
+
+# Efficiency
+
+The `bench` package is used to measure the runtime and memory usage of functions to assess their efficiency. Here, we compare the performance of the `linR` function wtih the base of R `lm` function 
+```{r}
+# load the bench package
+library(bench)
+
+benchmark_coef <- bench::mark(
+  linR_coef = as.numeric(linR(formula, data)$coefficients),
+  lm_coef = as.numeric(coef(lm(formula, data))),
+  iterations = 100
+)
+
+benchmark_coef[, c("expression", "itr/sec")]
+
+```
+The benchmark result shows that `linR` is faster than the base `lm` function for calculating coefficients. This suggests that `linR` function is more efficient. 
