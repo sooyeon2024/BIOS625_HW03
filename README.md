@@ -1,7 +1,7 @@
 # linR: Linear Regression 
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/sooyeon2024/BIOS625_HW03/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sooyeon2024/BIOS625_HW03/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/sooyeon2024/BIOS625_HW03/actions/workflows/r.yml/badge.svg)](https://github.com/sooyeon2024/BIOS625_HW03/actions/workflows/r.yml)
 [![Codecov test coverage](https://codecov.io/gh/sooyeon2024/BIOS625_HW03/graph/badge.svg)](https://app.codecov.io/gh/sooyeon2024/BIOS625_HW03)
 <!-- badges: end -->
 
