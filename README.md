@@ -51,7 +51,7 @@ linR_model$CI_table
 Here is a help page of **linR** function:
 
 ```r
-?linR
+??linR
 ```
 
 ## Contacts
