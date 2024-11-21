@@ -21,7 +21,7 @@ install.packages("devtools")
 devtools::install_github("sooyeon2024/BIOS625_HW03")
 
 # Download library
-library(BIOS625_HW03)
+library(BIOS625.HW03)
 ```
 
 ## Examples
