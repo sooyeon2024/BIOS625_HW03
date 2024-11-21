@@ -1,9 +1,10 @@
+library(testthat)
 data <- na.omit(airquality)
 formula <- Ozone ~ Temp + Wind
 
 # Models for comparison
 linR_model <- linR(formula, data, level = 0.95)
-lm_model <- lm(formula, data, level = 0.95)
+lm_model <- lm(formula, data)
 lm_model_summary <- summary(lm(formula, data))
 
 test_that("linR works", {
@@ -63,4 +64,9 @@ test_that("linR_CI works", {
     as.numeric(linR_CI_result$'CI.Upper'),
     as.numeric(lm_CI_result[, 2])
   )
+})
+
+test_that("Insufficient observations", {
+  data <- airquality[1:2, ]
+  expect_error(linR(Ozone ~ Temp + Wind, data), "Ensure n > p.")
 })
