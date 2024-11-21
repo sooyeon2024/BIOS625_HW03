@@ -19,6 +19,9 @@ install.packages("devtools")
 
 # Install linR from GitHub
 devtools::install_github("sooyeon2024/BIOS625_HW03")
+
+# Download library
+library(BIOS625.HW03)
 ```
 
 ## Examples
