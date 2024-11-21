@@ -35,7 +35,12 @@ jobs:
       # Step 3: Install system dependencies for R packages
       - name: Install system dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
-
+        
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-base texlive-latex-recommended texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+      
       # Step 4: Install R package dependencies
       - name: Install R package dependencies
         run: Rscript -e 'install.packages("remotes"); remotes::install_deps(dependencies = TRUE)'
